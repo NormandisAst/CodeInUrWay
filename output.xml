@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diagclass>
+  <package name="op">
+    <class name="jqs">
+      <attributes>
+        <attribute name="a1" type="byte" visibility="public" />
+      </attributes>
+      <methods>
+        <method name="M" returnType="void" visibility="public" />
+      </methods>
+      <relations>
+        <relation relatedClass="B" relationship="Inheritance" />
+        <relation relatedClass="N" relationship="Aggregation" />
+        <relation relatedClass="T" relationship="Composition" />
+      </relations>
+    </class>
+  </package>
+</diagclass>
