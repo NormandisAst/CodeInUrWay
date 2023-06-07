@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <diagclass>
-  <package name="op">
-    <class name="jqs">
+  <package name="PACK">
+    <class name="A">
       <attributes>
         <attribute name="a1" type="byte" visibility="public" />
       </attributes>
       <methods>
-        <method name="M" returnType="void" visibility="public" />
+        <method name="m1" returnType="void" visibility="public" />
       </methods>
       <relations>
-        <relation relatedClass="B" relationship="Inheritance" />
-        <relation relatedClass="N" relationship="Aggregation" />
-        <relation relatedClass="T" relationship="Composition" />
+
+        <relation relatedClass="C" relationship="Composition" />
+        <relation relatedClass="D" relationship="Inheritance" />
+        <relation relatedClass="B" relationship="Association" />
+
       </relations>
     </class>
   </package>

@@ -269,113 +269,29 @@ public class MainClass extends JFrame {
                 codeBuilder.append(classVisibility).append(" ");
             }
             codeBuilder.append("package ").append(packageName).append(";\n");
-            codeBuilder.append("public ").append(" ").append("class ").append(className);
-
+            codeBuilder.append("public class ").append(className);
 
             // Generate Java code for inheritance or composition
-            // Generate Java code for relations
-            // Generate Java code for relations
+            String inheritanceClassName = null;
+            String compositionClassName = null;
             Element relationsElement = classElement.getChild("relations");
             List<Element> relationElements = relationsElement.getChildren("relation");
             for (Element relationElement : relationElements) {
-
                 String relationship = relationElement.getAttributeValue("relationship");
-
-
                 String relatedClass = relationElement.getAttributeValue("relatedClass");
-                File classFolder2 = new File(packageFolder, relatedClass);
-                classFolder2.mkdirs();
-
-                if (!relationship.equals("Inheritance")) {
-                    codeBuilder.append("{");
-                }
-
-
 
                 if (relationship.equals("Inheritance")) {
-                    // Generate Java code for inheritance
-                    if (relatedClass != null && !relatedClass.isEmpty()) {
-                        codeBuilder.append(" extends ").append(relatedClass);
-                    }
+                    inheritanceClassName = relatedClass;
+                } else if (relationship.equals("Composition")) {
+                    compositionClassName = relatedClass;
                 }
-
-
-
-
-                // Generate code for association type
-                else if (relationship.equals("Composition")) {
-
-                    codeBuilder.append("\n\tprivate ").append(relatedClass).append(" ").append(relatedClass.toLowerCase()).append(";\n");
-
-                    codeBuilder.append("\n\tpublic").append(" ").append(className).append("(").append(relatedClass).append(" ").append(relatedClass.toLowerCase()).append(") {\n");
-                    codeBuilder.append("\t\t").append(relatedClass.toLowerCase()).append(" = new ").append(relatedClass.toLowerCase()).append("();\n");
-                    codeBuilder.append("\t}\n");
-
-                    codeBuilder.append("\n\tpublic  ").append(relatedClass).append(" get").append(relatedClass).append("() {\n");
-                    codeBuilder.append("\t\treturn ").append(relatedClass.toLowerCase()).append("\n");
-                    codeBuilder.append("\t}\n");
-                }
-                String associationType = "";
-                if (relationship.equals("Association")) {
-                    associationType = relationPanel.getAssociationType();
-                }
-
-                // Generate relation code based on association type
-                if (associationType.equals("1..*")) {
-                    // Generate code for 1..* association
-                    codeBuilder.append("\n\tprivate List<").append(relatedClass).append("> ").append(relatedClass).append("List = new ArrayList<>();\n");
-                    codeBuilder.append("\n\tpublic void add").append(relatedClass).append("(").append(relatedClass).append(" ").append(relatedClass).append(") {\n");
-                    codeBuilder.append("\t\t").append(relatedClass).append("List.add(").append(relatedClass).append(");\n");
-                    codeBuilder.append("\t}\n");
-                    codeBuilder.append("\n\tpublic List<").append(relatedClass).append("> get").append(relatedClass).append("List() {\n");
-                    codeBuilder.append("\t\treturn ").append(relatedClass).append("List;\n");
-                    codeBuilder.append("\t}\n");
-                } else if (associationType.equals("0..1")) {
-                    // Generate code for 0..1 association
-                    codeBuilder.append("\n\tprivate ").append(relatedClass).append(" ").append(relatedClass).append(";\n");
-                    codeBuilder.append("\n\tpublic void set").append(relatedClass).append("(").append(relatedClass).append(" ").append(relatedClass).append(") {\n");
-                    codeBuilder.append("\t\tthis.").append(relatedClass).append(" = ").append(relatedClass).append(";\n");
-                    codeBuilder.append("\t}\n");
-                    codeBuilder.append("\n\tpublic ").append(relatedClass).append(" get").append(relatedClass).append("() {\n");
-                    codeBuilder.append("\t\treturn ").append(relatedClass).append(";\n");
-                    codeBuilder.append("\t}\n");
-                } else if (associationType.equals("1..1")) {
-                    // Generate code for 1..1 association
-                    codeBuilder.append("\n\tprivate ").append(relatedClass).append(" ").append(relatedClass).append(";\n");
-                    codeBuilder.append("\n\tpublic void set").append(relatedClass).append("(").append(relatedClass).append(" ").append(relatedClass).append(") {\n");
-                    codeBuilder.append("\t\tthis.").append(relatedClass).append(" = ").append(relatedClass).append(";\n");
-                    codeBuilder.append("\t}\n");
-                    codeBuilder.append("\n\tpublic ").append(relatedClass).append(" get").append(relatedClass).append("() {\n");
-                    codeBuilder.append("\t\treturn ").append(relatedClass).append(";\n");
-                    codeBuilder.append("\t}\n");
-                }
-
-                if (relationship.equals("Aggregation")) {
-                    codeBuilder.append("\n\tprivate List<").append(relatedClass).append("> ").append(relatedClass.toLowerCase()).append("List = new ArrayList<>();\n");
-
-                    codeBuilder.append("\n\tpublic void add").append(relatedClass).append("(").append(relatedClass).append(" ").append(relatedClass.toLowerCase()).append(") {\n");
-                    codeBuilder.append("\t\t").append(relatedClass.toLowerCase()).append("List.add(").append(relatedClass.toLowerCase()).append(");\n");
-                    codeBuilder.append("\t}\n");
-
-                    codeBuilder.append("\n\tpublic List<").append(relatedClass).append("> get").append(relatedClass).append("List() {\n");
-                    codeBuilder.append("\t\treturn ").append(relatedClass.toLowerCase()).append("List;\n");
-                    codeBuilder.append("\t}\n");
-                } else if (relationship.equals("Association")) {
-                    codeBuilder.append("\n\tprivate ").append(relatedClass).append(" ").append(relatedClass.toLowerCase()).append(";\n");
-
-                    codeBuilder.append("\n\tpublic ").append(relatedClass).append(" get").append(relatedClass).append("() {\n");
-                    codeBuilder.append("\t\treturn ").append(relatedClass.toLowerCase()).append(";\n");
-                    codeBuilder.append("\t}\n");
-
-                    codeBuilder.append("\n\tpublic void set").append(relatedClass).append("(").append(relatedClass).append(" ").append(relatedClass.toLowerCase()).append(") {\n");
-                    codeBuilder.append("\t\tthis.").append(relatedClass.toLowerCase()).append(" = ").append(relatedClass.toLowerCase()).append(";\n");
-                    codeBuilder.append("\t}\n");
-                }
-
-
-
             }
 
+            if (inheritanceClassName != null && !inheritanceClassName.isEmpty()) {
+                codeBuilder.append(" extends ").append(inheritanceClassName);
+            }
+
+            codeBuilder.append(" {");
 
             // Generate Java code for attributes
             Element attributesElement = classElement.getChild("attributes");
@@ -386,22 +302,57 @@ public class MainClass extends JFrame {
                 String attributeName = attributeElement.getAttributeValue("name");
 
                 // Generate attribute declaration
-                codeBuilder.append("\n\t").append(attributeVisibility).append(" ").append(attributeType).append(" ").append(attributeName).append(";\n");
+                codeBuilder.append("\n\t").append(attributeVisibility).append(" ").append(attributeType).append(" ").append(attributeName).append(";");
 
                 // Generate getter method
-                codeBuilder.append("\n\t").append(attributeVisibility).append(" ").append(attributeType).append(" get").append(attributeName.substring(0, 1).toUpperCase()).append(attributeName.substring(1)).append("() {\n");
-                codeBuilder.append("\t\treturn ").append(attributeName).append(";\n");
-                codeBuilder.append("\t}\n");
+                codeBuilder.append("\n\t").append(attributeVisibility).append(" ").append(attributeType).append(" get").append(attributeName).append("() {");
+                codeBuilder.append("\n\t\treturn ").append(attributeName).append(";");
+                codeBuilder.append("\n\t}");
 
                 // Generate setter method
-                codeBuilder.append("\n\t").append(attributeVisibility).append(" void set").append(attributeName.substring(0, 1).toUpperCase()).append(attributeName.substring(1)).append("(").append(attributeType).append(" ").append(attributeName).append(") {\n");
-                codeBuilder.append("\t\tthis.").append(attributeName).append(" = ").append(attributeName).append(";\n");
-                codeBuilder.append("\t}\n");
+                codeBuilder.append("\n\t").append(attributeVisibility).append(" void set").append(attributeName).append("(").append(attributeType).append(" ").append(attributeName).append(") {");
+                codeBuilder.append("\n\t\tthis.").append(attributeName).append(" = ").append(attributeName).append(";");
+                codeBuilder.append("\n\t}");
             }
-            codeBuilder.append("\t}\n");
+
+            // Generate Java code for associations
+            for (Element relationElement : relationElements) {
+                String relationship = relationElement.getAttributeValue("relationship");
+                String relatedClass = relationElement.getAttributeValue("relatedClass");
+
+                if (relationship.equals("Association")) {
+                    // Generate code for association
+                    codeBuilder.append("\n\tprivate ").append(relatedClass).append(" ").append(relatedClass).append(";");
+
+                    // Generate getter method
+                    codeBuilder.append("\n\tpublic ").append(relatedClass).append(" get").append(relatedClass).append("() {");
+                    codeBuilder.append("\n\t\treturn ").append(relatedClass).append(";");
+                    codeBuilder.append("\n\t}");
+
+                    // Generate setter method
+                    codeBuilder.append("\n\tpublic void set").append(relatedClass).append("(").append(relatedClass).append(" ").append(relatedClass).append(") {");
+                    codeBuilder.append("\n\t\tthis.").append(relatedClass).append(" = ").append(relatedClass).append(";");
+                    codeBuilder.append("\n\t}");
+                } else if (relationship.equals("Composition")) {
+                    // Generate code for composition
+                    codeBuilder.append("\n\tprivate ").append(relatedClass).append(" ").append(relatedClass).append(";");
+
+                    // Generate getter method
+                    codeBuilder.append("\n\tpublic ").append(relatedClass).append(" get").append(relatedClass).append("() {");
+                    codeBuilder.append("\n\t\treturn ").append(relatedClass).append(";");
+                    codeBuilder.append("\n\t}");
+
+                    // Generate constructor
+                    codeBuilder.append("\n\tpublic ").append(className).append("(").append(relatedClass).append(" ").append(relatedClass).append(") {");
+                    codeBuilder.append("\n\t\tthis.").append(relatedClass).append(" = ").append(relatedClass).append(";");
+                    codeBuilder.append("\n\t}");
+                }
+            }
+
+            codeBuilder.append("\n}");
+
             // Write the code to the class file
             File classFile = new File(classFolder, className + ".java");
-
             try (FileWriter writer = new FileWriter(classFile)) {
                 writer.write(codeBuilder.toString());
             } catch (IOException e) {
